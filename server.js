@@ -1,14 +1,23 @@
 var express = require('express'),
     mongoose = require('mongoose'),
-    Transaction = require('./models/transactionModel');
+    Transaction = require('./models/transactionModel'),
+    bodyParser = require('body-parser');
 
 var db = mongoose.connect('mongodb://localhost/budget');
 var app = express();
-
 var port = process.env.PORT || 3001;
+app.use(bodyParser.json()); //Use middleware. Convert json in body to req.body.
+app.use(bodyParser.urlencoded({extended:true}));
 
 var router = express.Router();
 router.route('/transactions')
+    .post(function(req,res) {
+        var txn = new Transaction(req.body);
+
+        txn.save();
+        res.status(201).send(txn); //Status 201 = Created
+
+    })
     .get(function (req, res) {
 
         var query = {};

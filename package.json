@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.13.2",
     "express": "^4.13.1",
     "gulp": "^3.9.0",
     "gulp-nodemon": "^2.0.3",
