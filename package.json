@@ -5,7 +5,9 @@
   "main": "server.js",
   "dependencies": {
     "express": "^4.13.1",
-    "gulp": "^3.9.0"
+    "gulp": "^3.9.0",
+    "gulp-nodemon": "^2.0.3",
+    "mongoose": "^4.0.8"
   },
   "devDependencies": {},
   "scripts": {
