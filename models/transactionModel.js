@@ -3,7 +3,9 @@ var mongoose = require('mongoose'),
 
 var transactionModel = new Schema({
     title: { type: String },
-    author: { type: String },
+    description: { type: String },
+    category: { type: String },
+    amount: { type: Number },
     read: { type: Boolean, default: false }
 });
 
