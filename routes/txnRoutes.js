@@ -29,33 +29,61 @@ var routes = function () {
 
         });
 
+    //Middleware to get Txn by ID, since we do this in more than one
+    //  route.
+    router.use('/:id', function (req, res, next) {
+        Transaction.findById(req.params.id, function (err, txn) {
+            if (err)
+                res.status(500).send(err);
+            else if (txn) {
+                req.txn = txn;
+                next();
+            }
+            else {
+                res.status(404).send('No txn found.');
+            }
+        });
+    });
+
     router.route('/:id')
         .get(function (req, res) {
-            Transaction.findById(req.params.id, function (err, txn) {
-                if (err)
-                    res.status(500).send(err);
-                else
-                    res.json(txn);
-            });
+            res.json(req.txn);
         })
         .put(function (req, res) {
             //Find and update entire Transaction.
-            Transaction.findById(req.params.id, function(err, txn) {
-                if (err) {
+            req.txn.title = req.body.title;
+            req.txn.description = req.body.description;
+            req.txn.category = req.body.category;
+            req.txn.amount = req.body.amount;
+            req.txn.read = req.body.read;
+
+            req.txn.save(function(err) {
+                if (err)
                     res.status(500).send(err);
-                }
                 else {
-                    txn.title = req.body.title;
-                    txn.description = req.body.description;
-                    txn.category = req.body.category;
-                    txn.amount = req.body.amount;
-                    txn.read = req.body.read;
-
-                    txn.save();
-                    res.status(200).send(txn);
+                    res.json(req.txn);
                 }
-
             });
+        })
+        .patch(function (req, res) {
+
+            if (req.body._id) {
+                delete req.body._id; //We don't want to update this.
+            }
+
+            //Only update what is passed.
+            for(var p in req.body) {
+                req.txn[p] = req.body[p];
+            }
+
+            req.txn.save(function(err) {
+                if (err)
+                    res.status(500).send(err);
+                else {
+                    res.json(req.txn);
+                }
+            });
+
         });
 
     return router;
