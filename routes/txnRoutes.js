@@ -4,7 +4,7 @@ var express = require('express'),
 
 var routes = function () {
     var router = express.Router();
-    router.route('/transactions')
+    router.route('/')
         .post(function(req,res) {
             var txn = new Transaction(req.body);
 
