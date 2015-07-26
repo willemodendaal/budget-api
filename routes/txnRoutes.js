@@ -30,7 +30,7 @@ var routes = function () {
         });
 
     //Middleware to get Txn by ID, since we do this in more than one
-    //  route.
+    //  route. We append Txn to the request.
     router.use('/:id', function (req, res, next) {
         Transaction.findById(req.params.id, function (err, txn) {
             if (err)
@@ -84,6 +84,17 @@ var routes = function () {
                 }
             });
 
+        })
+        .delete(function(req,res) {
+
+            req.txn.remove(function(err) {
+                if (err)
+                    res.status(500).send(err);
+                else {
+                    //204 == No-content/Removed
+                    res.status(204).send('Txn deleted.');
+                }
+            });
         });
 
     return router;
