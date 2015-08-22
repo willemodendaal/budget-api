@@ -1,9 +1,14 @@
+/**
+ * Middleware used to extract `id` from /budgets/:budgetId/:id path and populate request with `budget` and `transaction` objects.
+ *
+ * @class InjectTxnMiddleware
+ * @static
+ */
+
 var Budget = require('../models/budgetModel'),
     Transaction = require('../models/transactionModel');
 
-//Middleware to get Txn by ID, since we do this in more than one
-//  route. We append Txn to the request.
-var injectTxnMiddleware = function(req, res, next) {
+var InjectTxnMiddleware = function(req, res, next) {
 
     //Find specified budget. Security to be added here to ensure users
     //  only see their own budgets.
@@ -40,4 +45,4 @@ var injectTxnMiddleware = function(req, res, next) {
     }
 };
 
-module.exports = injectTxnMiddleware;
+module.exports = InjectTxnMiddleware;

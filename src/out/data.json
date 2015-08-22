@@ -1,6 +1,24 @@
 {
     "project": {},
     "files": {
+        "middleware/injectBudgetMiddleware.js": {
+            "name": "middleware/injectBudgetMiddleware.js",
+            "modules": {},
+            "classes": {
+                "InjectBudgetMiddleware": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "middleware/injectTxnMiddleware.js": {
+            "name": "middleware/injectTxnMiddleware.js",
+            "modules": {},
+            "classes": {
+                "InjectTxnMiddleware": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "models/budgetModel.js": {
             "name": "models/budgetModel.js",
             "modules": {},
@@ -38,6 +56,32 @@
     },
     "modules": {},
     "classes": {
+        "InjectBudgetMiddleware": {
+            "name": "InjectBudgetMiddleware",
+            "shortname": "InjectBudgetMiddleware",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "middleware/injectBudgetMiddleware.js",
+            "line": 1,
+            "description": "Middleware used to extract `id` from /budgets/ path and populate request with `budget` object.",
+            "static": 1
+        },
+        "InjectTxnMiddleware": {
+            "name": "InjectTxnMiddleware",
+            "shortname": "InjectTxnMiddleware",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "middleware/injectTxnMiddleware.js",
+            "line": 1,
+            "description": "Middleware used to extract `id` from /budgets/:budgetId/:id path and populate request with `budget` and `transaction` objects.",
+            "static": 1
+        },
         "Budget": {
             "name": "Budget",
             "shortname": "Budget",
@@ -140,7 +184,7 @@
         },
         {
             "file": "routes/budgetRoutes.js",
-            "line": 30,
+            "line": 31,
             "description": "List all budgets.\nPath: api/budgets/",
             "itemtype": "method",
             "name": "GET",
@@ -148,7 +192,7 @@
         },
         {
             "file": "routes/budgetRoutes.js",
-            "line": 52,
+            "line": 53,
             "description": "Path: api/budgets/",
             "itemtype": "method",
             "name": "POST",
@@ -156,7 +200,7 @@
         },
         {
             "file": "routes/budgetRoutes.js",
-            "line": 70,
+            "line": 71,
             "description": "Get a single Budget.\nPath: api/budgets/:id",
             "itemtype": "method",
             "name": "GET",
@@ -164,7 +208,7 @@
         },
         {
             "file": "routes/budgetRoutes.js",
-            "line": 97,
+            "line": 81,
             "description": "Path: api/budgets/:id",
             "itemtype": "method",
             "name": "PUT",
@@ -172,7 +216,7 @@
         },
         {
             "file": "routes/budgetRoutes.js",
-            "line": 116,
+            "line": 100,
             "description": "Path: api/budgets/:id",
             "itemtype": "method",
             "name": "PATCH",
@@ -180,7 +224,7 @@
         },
         {
             "file": "routes/budgetRoutes.js",
-            "line": 135,
+            "line": 119,
             "description": "Path: api/budgets/:id",
             "itemtype": "method",
             "name": "DELETE",

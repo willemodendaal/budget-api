@@ -40,6 +40,8 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/Budget.html">Budget</a></li>
                                 <li><a href="../classes/budgetRouter.html">budgetRouter</a></li>
+                                <li><a href="../classes/InjectBudgetMiddleware.html">InjectBudgetMiddleware</a></li>
+                                <li><a href="../classes/InjectTxnMiddleware.html">InjectTxnMiddleware</a></li>
                                 <li><a href="../classes/Transaction.html">Transaction</a></li>
                             </ul>
                 
@@ -91,7 +93,8 @@
  */
 
 var express = require(&#x27;express&#x27;),
-    Budget = require(&#x27;../models/budgetModel&#x27;);
+    Budget = require(&#x27;../models/budgetModel&#x27;),
+    InjectBudgetMiddleware = require(&#x27;../middleware/injectBudgetMiddleware&#x27;);
 
 
 var budgetRouter = function () {
@@ -100,7 +103,7 @@ var budgetRouter = function () {
         .post(_postBudget)
         .get(_findBudgets);
 
-    router.use(&#x27;/:id&#x27;, _injectBudgetMiddleware);
+    router.use(&#x27;/:id&#x27;, InjectBudgetMiddleware);
 
     router.route(&#x27;/:id&#x27;)
         .get(_getBudget)
@@ -159,23 +162,6 @@ function _postBudget(req, res) {
  */
 function _getBudget(req, res) {
     res.json(req.budget);
-}
-
-//Middleware to get Budget by ID, since we do this in more than one
-//  route. We append Budget to the request.
-function _injectBudgetMiddleware(req, res, next) {
-    Budget.findById(req.params.id, function (err, budget) {
-        if (err) {
-            res.status(500).send(err);
-        }
-        else if (budget) {
-            req.budget = budget;
-            next();
-        }
-        else {
-            res.status(404).send(&#x27;No budget found.&#x27;);
-        }
-    });
 }
 
 /**

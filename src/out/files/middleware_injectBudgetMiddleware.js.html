@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>routes/txnRoutes.js</title>
+    <title>middleware/injectBudgetMiddleware.js</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -80,158 +80,37 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: routes/txnRoutes.js</h1>
+<h1 class="file-heading">File: middleware/injectBudgetMiddleware.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
+ * Middleware used to extract &#x60;id&#x60; from /budgets/ path and populate request with &#x60;budget&#x60; object.
  *
- * REST API to access Transactions.
- * Transactions are always accessed via a parent /budget/:budgetId
- *
- * @class budgetRouter
+ * @class InjectBudgetMiddleware
  * @static
  */
 
-var express = require(&#x27;express&#x27;),
-    Budget = require(&#x27;../models/budgetModel&#x27;),
-    Transaction = require(&#x27;../models/transactionModel&#x27;),
-    InjectTxnMiddleware = require(&#x27;../middleware/injectTxnMiddleware&#x27;);
+var Budget = require(&#x27;../models/budgetModel&#x27;);
 
-var txnRouter = function () {
-    var router = express.Router();
-
-    router.use(&#x27;/budget/:budgetId/transactions/&#x27;, InjectTxnMiddleware);
-
-    router.route(&#x27;/budget/:budgetId/transactions/&#x27;)
-        .post(_postTxn)
-        .get(_findTxns);
-
-    router.use(&#x27;/budget/:budgetId/transactions/:id&#x27;, InjectTxnMiddleware);
-
-    router.route(&#x27;/budget/:budgetId/transactions/:id&#x27;)
-        .get(_getTxn)
-        .put(_putTxn)
-        .patch(_patchTxn)
-        .delete(_deleteTxn);
-
-    return router;
+//Middleware to get Budget by ID, since we do this in more than one
+//  route. We append Budget to the request.
+var InjectBudgetMiddleware = function(req, res, next) {
+    Budget.findById(req.params.id, function (err, budget) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else if (budget) {
+            req.budget = budget;
+            next();
+        }
+        else {
+            res.status(404).send(&#x27;No budget found.&#x27;);
+        }
+    });
 };
 
-/**
- * List all transactions.
- * Path: api/budget/:budgetId/transactions/
- *
- * @method GET
- */
-function _findTxns(req, res) {
-    var query = {
-        budget: req.params.budgetId
-    };
-
-    if (req.query.category) {
-        query.category = req.query.category;
-    }
-
-    Transaction.find(query, function (err, txns) {
-        if (err) {
-            res.status(500).send(err);
-        }
-
-        res.json(txns);
-    });
-}
-
-/**
- * Path: api/budget/:budgetId/transactions/
- *
- * @method POST
- */
-function _postTxn(req, res) {
-    var txn = new Transaction(req.body);
-    txn.budget = req.budget.id;
-
-    txn.save(function(err,txn) {
-        if (err) {
-            res.status(500).send(err);
-        }
-        else {
-            res.status(201).send(txn); //Status 201 = Created
-        }
-    });
-}
-
-/**
- * Get a single Transaction.
- * Path: api/budget/:budgetId/transactions/:id
- *
- * @method GET
- */
-function _getTxn(req, res) {
-
-    //Txn fetched by middleware, or 404 returned by middleware.
-
-    res.json(req.txn);
-}
-
-/**
- * Path: api/budget/:budgetId/transactions/:id
- *
- * @method PUT
- */
-function _putTxn(req, res) {
-    //Update entire Transaction (all fields).
-    req.txn.mapAllFieldsFrom(req.body);
-
-    req.txn.save(function(err) {
-        if (err) {
-            res.status(500).send(err);
-        }
-        else {
-            res.json(req.txn);
-        }
-    });
-}
-
-/**
- * Path: api/budget/:budgetId/transactions/:id
- *
- * @method PATCH
- */
-function _patchTxn(req, res) {
-    //Update only fields that were passed.
-    req.txn.mappPassedFieldsFrom(req.body);
-
-    req.txn.save(function(err) {
-        if (err) {
-            res.status(500).send(err);
-        }
-        else {
-            res.json(req.txn);
-        }
-    });
-}
-
-/**
- * Path: api/budget/:budgetId/transactions/:id
- *
- * @method DELETE
- */
-
-function _deleteTxn(req,res) {
-
-    req.txn.remove(function(err) {
-        if (err) {
-            res.status(500).send(err);
-        }
-        else {
-            //204 == No-content/Removed
-            res.status(204).send(&#x27;Txn deleted.&#x27;);
-        }
-    });
-}
-
-module.exports = txnRouter;
+module.exports = InjectBudgetMiddleware;
     </pre>
 </div>
                     </div>
