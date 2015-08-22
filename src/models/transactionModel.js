@@ -8,11 +8,11 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var transactionSchema = new Schema({
-    title: {type: String},
+    title: {type: String, required: true},
     description: {type: String},
-    category: {type: String},
-    amount: {type: Number},
-    budget: {type: mongoose.Schema.Types.ObjectId, ref: 'Budget'}
+    category: {type: String, required: true},
+    amount: {type: Number, required: true},
+    budget: {type: mongoose.Schema.Types.ObjectId, ref: 'Budget', required: true}
 });
 
 /**
