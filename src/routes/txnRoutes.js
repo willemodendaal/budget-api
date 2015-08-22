@@ -57,8 +57,14 @@ function _findTxns(req, res) {
 function _postTxn(req, res) {
     var txn = new Transaction(req.body);
 
-    txn.save();
-    res.status(201).send(txn); //Status 201 = Created
+    txn.save(function(err,txn) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.status(201).send(txn); //Status 201 = Created
+        }
+    });
 }
 
 /**
