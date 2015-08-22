@@ -7,7 +7,8 @@
  */
 
 var express = require('express'),
-    Budget = require('../models/budgetModel');
+    Budget = require('../models/budgetModel'),
+    InjectBudgetMiddleware = require('../middleware/injectBudgetMiddleware');
 
 
 var budgetRouter = function () {
@@ -16,7 +17,7 @@ var budgetRouter = function () {
         .post(_postBudget)
         .get(_findBudgets);
 
-    router.use('/:id', _injectBudgetMiddleware);
+    router.use('/:id', InjectBudgetMiddleware);
 
     router.route('/:id')
         .get(_getBudget)
@@ -75,23 +76,6 @@ function _postBudget(req, res) {
  */
 function _getBudget(req, res) {
     res.json(req.budget);
-}
-
-//Middleware to get Budget by ID, since we do this in more than one
-//  route. We append Budget to the request.
-function _injectBudgetMiddleware(req, res, next) {
-    Budget.findById(req.params.id, function (err, budget) {
-        if (err) {
-            res.status(500).send(err);
-        }
-        else if (budget) {
-            req.budget = budget;
-            next();
-        }
-        else {
-            res.status(404).send('No budget found.');
-        }
-    });
 }
 
 /**

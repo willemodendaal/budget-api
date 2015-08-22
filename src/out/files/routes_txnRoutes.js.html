@@ -85,24 +85,29 @@
 /**
  *
  * REST API to access Transactions.
+ * Transactions are always accessed via a parent /budget/:budgetId
  *
  * @class budgetRouter
  * @static
  */
 
 var express = require(&#x27;express&#x27;),
+    Budget = require(&#x27;../models/budgetModel&#x27;),
     Transaction = require(&#x27;../models/transactionModel&#x27;);
 
 
 var txnRouter = function () {
     var router = express.Router();
-    router.route(&#x27;/&#x27;)
+
+    router.use(&#x27;/budget/:budgetId/transactions/&#x27;, _injectTxnMiddleware);
+
+    router.route(&#x27;/budget/:budgetId/transactions/&#x27;)
         .post(_postTxn)
         .get(_findTxns);
 
-    router.use(&#x27;/:id&#x27;, _injectTxnMiddleware);
+    router.use(&#x27;/budget/:budgetId/transactions/:id&#x27;, _injectTxnMiddleware);
 
-    router.route(&#x27;/:id&#x27;)
+    router.route(&#x27;/budget/:budgetId/transactions/:id&#x27;)
         .get(_getTxn)
         .put(_putTxn)
         .patch(_patchTxn)
@@ -113,12 +118,14 @@ var txnRouter = function () {
 
 /**
  * List all transactions.
- * Path: api/transactions/
+ * Path: api/budget/:budgetId/transactions/
  *
  * @method GET
  */
 function _findTxns(req, res) {
-    var query = {};
+    var query = {
+        budget: req.params.budgetId
+    };
 
     if (req.query.category) {
         query.category = req.query.category;
@@ -134,12 +141,13 @@ function _findTxns(req, res) {
 }
 
 /**
- * Path: api/transactions/
+ * Path: api/budget/:budgetId/transactions/
  *
  * @method POST
  */
 function _postTxn(req, res) {
     var txn = new Transaction(req.body);
+    txn.budget = req.budget.id;
 
     txn.save(function(err,txn) {
         if (err) {
@@ -153,33 +161,19 @@ function _postTxn(req, res) {
 
 /**
  * Get a single Transaction.
- * Path: api/transactions/:id
+ * Path: api/budget/:budgetId/transactions/:id
  *
  * @method GET
  */
 function _getTxn(req, res) {
+
+    //Txn fetched by middleware, or 404 returned by middleware.
+
     res.json(req.txn);
 }
 
-//Middleware to get Txn by ID, since we do this in more than one
-//  route. We append Txn to the request.
-function _injectTxnMiddleware(req, res, next) {
-    Transaction.findById(req.params.id, function (err, txn) {
-        if (err) {
-            res.status(500).send(err);
-        }
-        else if (txn) {
-            req.txn = txn;
-            next();
-        }
-        else {
-            res.status(404).send(&#x27;No txn found.&#x27;);
-        }
-    });
-}
-
 /**
- * Path: api/transactions/:id
+ * Path: api/budget/:budgetId/transactions/:id
  *
  * @method PUT
  */
@@ -198,7 +192,7 @@ function _putTxn(req, res) {
 }
 
 /**
- * Path: api/transactions/:id
+ * Path: api/budget/:budgetId/transactions/:id
  *
  * @method PATCH
  */
@@ -217,7 +211,7 @@ function _patchTxn(req, res) {
 }
 
 /**
- * Path: api/transactions/:id
+ * Path: api/budget/:budgetId/transactions/:id
  *
  * @method DELETE
  */
@@ -233,6 +227,45 @@ function _deleteTxn(req,res) {
             res.status(204).send(&#x27;Txn deleted.&#x27;);
         }
     });
+}
+
+//Middleware to get Txn by ID, since we do this in more than one
+//  route. We append Txn to the request.
+function _injectTxnMiddleware(req, res, next) {
+
+    //Find specified budget. Security to be added here to ensure users
+    //  only see their own budgets.
+    Budget.findById(req.params.budgetId, function(err, budget) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else if (budget &amp;&amp; !req.params.id) {
+            //Budget found, but no txn id specified.
+            req.budget = budget;
+            next();
+        }
+        else if (budget) {
+            req.budget = budget;
+            //Budget found. Find transaction under budget.
+            Transaction.findById(req.params.id, _returnTxn);
+        }
+        else {
+            res.status(404).send(&#x27;Budget not found.&#x27;);
+        }
+    });
+
+    function _returnTxn(err, txn) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else if (txn) {
+            req.txn = txn;
+            next();
+        }
+        else {
+            res.status(404).send(&#x27;Txn not found.&#x27;);
+        }
+    }
 }
 
 module.exports = txnRouter;

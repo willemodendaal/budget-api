@@ -72,7 +72,7 @@
             "extension_for": [],
             "file": "routes/txnRoutes.js",
             "line": 1,
-            "description": "REST API to access Transactions.",
+            "description": "REST API to access Transactions.\n Transactions are always accessed via a parent /budget/:budgetId",
             "static": 1
         }
     },
@@ -188,48 +188,48 @@
         },
         {
             "file": "routes/txnRoutes.js",
-            "line": 30,
-            "description": "List all transactions.\nPath: api/transactions/",
+            "line": 35,
+            "description": "List all transactions.\nPath: api/budget/:budgetId/transactions/",
             "itemtype": "method",
             "name": "GET",
             "class": "budgetRouter"
         },
         {
             "file": "routes/txnRoutes.js",
-            "line": 52,
-            "description": "Path: api/transactions/",
+            "line": 59,
+            "description": "Path: api/budget/:budgetId/transactions/",
             "itemtype": "method",
             "name": "POST",
             "class": "budgetRouter"
         },
         {
             "file": "routes/txnRoutes.js",
-            "line": 70,
-            "description": "Get a single Transaction.\nPath: api/transactions/:id",
+            "line": 78,
+            "description": "Get a single Transaction.\nPath: api/budget/:budgetId/transactions/:id",
             "itemtype": "method",
             "name": "GET",
             "class": "budgetRouter"
         },
         {
             "file": "routes/txnRoutes.js",
-            "line": 97,
-            "description": "Path: api/transactions/:id",
+            "line": 91,
+            "description": "Path: api/budget/:budgetId/transactions/:id",
             "itemtype": "method",
             "name": "PUT",
             "class": "budgetRouter"
         },
         {
             "file": "routes/txnRoutes.js",
-            "line": 116,
-            "description": "Path: api/transactions/:id",
+            "line": 110,
+            "description": "Path: api/budget/:budgetId/transactions/:id",
             "itemtype": "method",
             "name": "PATCH",
             "class": "budgetRouter"
         },
         {
             "file": "routes/txnRoutes.js",
-            "line": 135,
-            "description": "Path: api/transactions/:id",
+            "line": 129,
+            "description": "Path: api/budget/:budgetId/transactions/:id",
             "itemtype": "method",
             "name": "DELETE",
             "class": "budgetRouter"
