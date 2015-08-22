@@ -17,21 +17,25 @@ var InjectTxnMiddleware = function(req, res, next) {
             res.status(500).send(err);
         }
         else if (budget && !req.params.id) {
-            //Budget found, but no txn id specified.
+            //Budget found, but no txn id specified. Only set budget
+            //  and continue.
             req.budget = budget;
             next();
         }
-        else if (budget) {
+        else if (budget && req.params.id) {
+            //Budget found. Find Transaction under budget and continue.
             req.budget = budget;
-            //Budget found. Find transaction under budget.
-            Transaction.findById(req.params.id, _returnTxn);
+            _findTxn(req, res);
         }
         else {
             res.status(404).send('Budget not found.');
         }
     });
+};
 
-    function _returnTxn(err, txn) {
+
+function _findTxn(req, res) {
+    Transaction.findById(req.params.id, function(err,txn) {
         if (err) {
             res.status(500).send(err);
         }
@@ -42,7 +46,7 @@ var InjectTxnMiddleware = function(req, res, next) {
         else {
             res.status(404).send('Txn not found.');
         }
-    }
-};
+    });
+}
 
 module.exports = InjectTxnMiddleware;
