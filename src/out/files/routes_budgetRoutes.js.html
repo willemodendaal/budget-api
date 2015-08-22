@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>models/transactionModel.js</title>
+    <title>routes/budgetRoutes.js</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -78,62 +78,164 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: models/transactionModel.js</h1>
+<h1 class="file-heading">File: routes/budgetRoutes.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- *  Provides database access to Transaction objects. Exports Transaction model.
  *
- * @class Transaction
+ * REST API to access Budgets.
+ *
+ * @class budgetRouter
+ * @static
  */
 
-var mongoose = require(&#x27;mongoose&#x27;),
-    Schema = mongoose.Schema;
+var express = require(&#x27;express&#x27;),
+    Budget = require(&#x27;../models/budgetModel&#x27;);
 
-var transactionSchema = new Schema({
-    title: {type: String, required: true},
-    description: {type: String},
-    category: {type: String, required: true},
-    amount: {type: Number, required: true},
-    budget: {type: mongoose.Schema.Types.ObjectId, ref: &#x27;Budget&#x27;, required: true}
-});
 
-/**
- * Map all fields from a Transaction onto this Transaction, even
- *  null/empty fields.
- *
- * @method mapAllFieldsFrom
- * @param txn {Transaction} The transaction to map from onto this instance.
- */
-transactionSchema.methods.mapAllFieldsFrom = function (txn) {
-    this.title = txn.title;
-    this.description = txn.description;
-    this.category = txn.category;
-    this.amount = txn.amount;
-    this.budget = txn.budget;
+var budgetRouter = function () {
+    var router = express.Router();
+    router.route(&#x27;/&#x27;)
+        .post(_postBudget)
+        .get(_findBudgets);
+
+    router.use(&#x27;/:id&#x27;, _injectBudgetMiddleware);
+
+    router.route(&#x27;/:id&#x27;)
+        .get(_getBudget)
+        .put(_putBudget)
+        .patch(_patchBudget)
+        .delete(_deleteBudget);
+
+    return router;
 };
 
 /**
- * Map only the fields that were passed from a Transaction onto this transaction.
- * The _id property will be ignored if passed.
+ * List all budgets.
+ * Path: api/budgets/
  *
- * @method mapPassedFieldsFrom
- * @param txn {Transaction} The transaction to map from onto this instance.
+ * @method GET
  */
-transactionSchema.methods.mapPassedFieldsFrom = function (txn) {
-    if (txn._id) {
-        delete txn._id; //We don&#x27;t want to update the id.
+function _findBudgets(req, res) {
+    var query = {};
+
+    if (req.query.category) {
+        query.category = req.query.category;
     }
 
-    //Only update what is passed.
-    for (var p in txn) {
-        this[p] = txn[p];
-    }
-};
+    Budget.find(query, function (err, budgets) {
+        if (err) {
+            res.status(500).send(err);
+        }
 
-module.exports = mongoose.model(&#x27;Transaction&#x27;, transactionSchema);
+        res.json(budgets);
+    });
+}
 
+/**
+ * Path: api/budgets/
+ *
+ * @method POST
+ */
+function _postBudget(req, res) {
+    var budget = new Budget(req.body);
+
+    budget.save(function(err,budget) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.status(201).send(budget); //Status 201 = Created
+        }
+    });
+}
+
+/**
+ * Get a single Budget.
+ * Path: api/budgets/:id
+ *
+ * @method GET
+ */
+function _getBudget(req, res) {
+    res.json(req.budget);
+}
+
+//Middleware to get Budget by ID, since we do this in more than one
+//  route. We append Budget to the request.
+function _injectBudgetMiddleware(req, res, next) {
+    Budget.findById(req.params.id, function (err, budget) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else if (budget) {
+            req.budget = budget;
+            next();
+        }
+        else {
+            res.status(404).send(&#x27;No budget found.&#x27;);
+        }
+    });
+}
+
+/**
+ * Path: api/budgets/:id
+ *
+ * @method PUT
+ */
+function _putBudget(req, res) {
+    //Update entire Budget (all fields).
+    req.budget.mapAllFieldsFrom(req.body);
+
+    req.budget.save(function(err) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.json(req.budget);
+        }
+    });
+}
+
+/**
+ * Path: api/budgets/:id
+ *
+ * @method PATCH
+ */
+function _patchBudget(req, res) {
+    //Update only fields that were passed.
+    req.budget.mappPassedFieldsFrom(req.body);
+
+    req.budget.save(function(err) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.json(req.budget);
+        }
+    });
+}
+
+/**
+ * Path: api/budgets/:id
+ *
+ * @method DELETE
+ */
+
+function _deleteBudget(req,res) {
+
+    req.budget.remove(function(err) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else {
+            //204 == No-content/Removed
+            res.status(204).send(&#x27;Budget deleted.&#x27;);
+        }
+    });
+}
+
+module.exports = budgetRouter;
     </pre>
 </div>
                     </div>

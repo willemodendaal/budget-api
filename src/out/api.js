@@ -1,8 +1,9 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
+        "Budget",
         "Transaction",
-        "txnRouter"
+        "budgetRouter"
     ],
     "modules": [],
     "allModules": [],

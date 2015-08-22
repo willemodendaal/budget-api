@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>models/transactionModel.js</title>
+    <title>models/budgetModel.js</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -78,61 +78,59 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: models/transactionModel.js</h1>
+<h1 class="file-heading">File: models/budgetModel.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- *  Provides database access to Transaction objects. Exports Transaction model.
+ *  Provides database access to Budget objects. Exports Budget model.
  *
- * @class Transaction
+ * @class Budget
  */
 
 var mongoose = require(&#x27;mongoose&#x27;),
     Schema = mongoose.Schema;
 
-var transactionSchema = new Schema({
-    title: {type: String, required: true},
-    description: {type: String},
-    category: {type: String, required: true},
-    amount: {type: Number, required: true},
-    budget: {type: mongoose.Schema.Types.ObjectId, ref: &#x27;Budget&#x27;, required: true}
+var budgetSchema = new Schema({
+    title: { type: String, required: true },
+    description: { type: String },
+    dateFrom: { type: Date, required: true },
+    dateTo: { type: Date, required: true }
 });
 
 /**
- * Map all fields from a Transaction onto this Transaction, even
+ * Map all fields from a Budget object onto this Budget, even
  *  null/empty fields.
  *
  * @method mapAllFieldsFrom
- * @param txn {Transaction} The transaction to map from onto this instance.
+ * @param budget {Budget} The budget to map from onto this instance.
  */
-transactionSchema.methods.mapAllFieldsFrom = function (txn) {
-    this.title = txn.title;
-    this.description = txn.description;
-    this.category = txn.category;
-    this.amount = txn.amount;
-    this.budget = txn.budget;
+budgetSchema.methods.mapAllFieldsFrom = function(budget) {
+    this.title = budget.title;
+    this.description = budget.description;
+    this.dateFrom = budget.dateFrom;
+    this.dateTo = budget.dateTo;
 };
 
 /**
- * Map only the fields that were passed from a Transaction onto this transaction.
+ * Map only the fields that were passed from a Budget onto this budget.
  * The _id property will be ignored if passed.
  *
  * @method mapPassedFieldsFrom
- * @param txn {Transaction} The transaction to map from onto this instance.
+ * @param budget {Budget} The budget to map from onto this instance.
  */
-transactionSchema.methods.mapPassedFieldsFrom = function (txn) {
-    if (txn._id) {
-        delete txn._id; //We don&#x27;t want to update the id.
+budgetSchema.methods.mapPassedFieldsFrom = function(budget) {
+    if (budget._id) {
+        delete budget._id; //We don&#x27;t want to update the id.
     }
 
     //Only update what is passed.
-    for (var p in txn) {
-        this[p] = txn[p];
+    for(var p in budget) {
+        this[p] = budget[p];
     }
 };
 
-module.exports = mongoose.model(&#x27;Transaction&#x27;, transactionSchema);
+module.exports = mongoose.model(&#x27;Budget&#x27;, budgetSchema);
 
     </pre>
 </div>

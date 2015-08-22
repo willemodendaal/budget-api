@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>txnRouter</title>
+    <title>budgetRouter</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -38,8 +38,9 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Budget.html">Budget</a></li>
+                                <li><a href="../classes/budgetRouter.html">budgetRouter</a></li>
                                 <li><a href="../classes/Transaction.html">Transaction</a></li>
-                                <li><a href="../classes/txnRouter.html">txnRouter</a></li>
                             </ul>
                 
                 
@@ -77,7 +78,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>txnRouter Class</h1>
+<h1>budgetRouter Class</h1>
 <div class="box meta">
 
 
@@ -115,6 +116,18 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_DELETE">DELETE</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_GET">GET</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_GET">GET</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_GET">GET</a>
 
                             </li>
@@ -127,7 +140,19 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_PATCH">PATCH</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_POST">POST</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_POST">POST</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_PUT">PUT</a>
 
                             </li>
                             <li class="index-item method">
@@ -159,7 +184,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/routes_txnRoutes.js.html#l129"><code>routes&#x2F;txnRoutes.js:129</code></a>
+        <a href="../files/routes_txnRoutes.js.html#l135"><code>routes&#x2F;txnRoutes.js:135</code></a>
         </p>
 
 
@@ -168,6 +193,133 @@
 
     <div class="description">
         <p>Path: api/transactions/:id</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_DELETE" class="method item">
+    <h3 class="name"><code>DELETE</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/routes_budgetRoutes.js.html#l135"><code>routes&#x2F;budgetRoutes.js:135</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Path: api/budgets/:id</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_GET" class="method item">
+    <h3 class="name"><code>GET</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/routes_budgetRoutes.js.html#l70"><code>routes&#x2F;budgetRoutes.js:70</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Get a single Budget.
+Path: api/budgets/:id</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_GET" class="method item">
+    <h3 class="name"><code>GET</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/routes_txnRoutes.js.html#l70"><code>routes&#x2F;txnRoutes.js:70</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Get a single Transaction.
+Path: api/transactions/:id</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_GET" class="method item">
+    <h3 class="name"><code>GET</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/routes_budgetRoutes.js.html#l30"><code>routes&#x2F;budgetRoutes.js:30</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>List all budgets.
+Path: api/budgets/</p>
 
     </div>
 
@@ -207,8 +359,8 @@ Path: api/transactions/</p>
 
 
 </div>
-<div id="method_GET" class="method item">
-    <h3 class="name"><code>GET</code></h3>
+<div id="method_PATCH" class="method item">
+    <h3 class="name"><code>PATCH</code></h3>
 
         <span class="paren">()</span>
 
@@ -222,7 +374,7 @@ Path: api/transactions/</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/routes_txnRoutes.js.html#l64"><code>routes&#x2F;txnRoutes.js:64</code></a>
+        <a href="../files/routes_budgetRoutes.js.html#l116"><code>routes&#x2F;budgetRoutes.js:116</code></a>
         </p>
 
 
@@ -230,8 +382,7 @@ Path: api/transactions/</p>
     </div>
 
     <div class="description">
-        <p>Get a single Transaction.
-Path: api/transactions/:id</p>
+        <p>Path: api/budgets/:id</p>
 
     </div>
 
@@ -254,7 +405,7 @@ Path: api/transactions/:id</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/routes_txnRoutes.js.html#l110"><code>routes&#x2F;txnRoutes.js:110</code></a>
+        <a href="../files/routes_txnRoutes.js.html#l116"><code>routes&#x2F;txnRoutes.js:116</code></a>
         </p>
 
 
@@ -263,6 +414,37 @@ Path: api/transactions/:id</p>
 
     <div class="description">
         <p>Path: api/transactions/:id</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_POST" class="method item">
+    <h3 class="name"><code>POST</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/routes_budgetRoutes.js.html#l52"><code>routes&#x2F;budgetRoutes.js:52</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Path: api/budgets/</p>
 
     </div>
 
@@ -316,7 +498,38 @@ Path: api/transactions/:id</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/routes_txnRoutes.js.html#l91"><code>routes&#x2F;txnRoutes.js:91</code></a>
+        <a href="../files/routes_budgetRoutes.js.html#l97"><code>routes&#x2F;budgetRoutes.js:97</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Path: api/budgets/:id</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_PUT" class="method item">
+    <h3 class="name"><code>PUT</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/routes_txnRoutes.js.html#l97"><code>routes&#x2F;txnRoutes.js:97</code></a>
         </p>
 
 

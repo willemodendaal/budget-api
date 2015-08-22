@@ -1,6 +1,15 @@
 {
     "project": {},
     "files": {
+        "models/budgetModel.js": {
+            "name": "models/budgetModel.js",
+            "modules": {},
+            "classes": {
+                "Budget": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "models/transactionModel.js": {
             "name": "models/transactionModel.js",
             "modules": {},
@@ -10,11 +19,18 @@
             "fors": {},
             "namespaces": {}
         },
+        "routes/budgetRoutes.js": {
+            "name": "routes/budgetRoutes.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "routes/txnRoutes.js": {
             "name": "routes/txnRoutes.js",
             "modules": {},
             "classes": {
-                "txnRouter": 1
+                "budgetRouter": 1
             },
             "fors": {},
             "namespaces": {}
@@ -22,6 +38,18 @@
     },
     "modules": {},
     "classes": {
+        "Budget": {
+            "name": "Budget",
+            "shortname": "Budget",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "models/budgetModel.js",
+            "line": 1,
+            "description": "Provides database access to Budget objects. Exports Budget model."
+        },
         "Transaction": {
             "name": "Transaction",
             "shortname": "Transaction",
@@ -34,9 +62,9 @@
             "line": 1,
             "description": "Provides database access to Transaction objects. Exports Transaction model."
         },
-        "txnRouter": {
-            "name": "txnRouter",
-            "shortname": "txnRouter",
+        "budgetRouter": {
+            "name": "budgetRouter",
+            "shortname": "budgetRouter",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -50,6 +78,36 @@
     },
     "elements": {},
     "classitems": [
+        {
+            "file": "models/budgetModel.js",
+            "line": 17,
+            "description": "Map all fields from a Budget object onto this Budget, even\n null/empty fields.",
+            "itemtype": "method",
+            "name": "mapAllFieldsFrom",
+            "params": [
+                {
+                    "name": "budget",
+                    "description": "The budget to map from onto this instance.",
+                    "type": "Budget"
+                }
+            ],
+            "class": "Budget"
+        },
+        {
+            "file": "models/budgetModel.js",
+            "line": 31,
+            "description": "Map only the fields that were passed from a Budget onto this budget.\nThe _id property will be ignored if passed.",
+            "itemtype": "method",
+            "name": "mapPassedFieldsFrom",
+            "params": [
+                {
+                    "name": "budget",
+                    "description": "The budget to map from onto this instance.",
+                    "type": "Budget"
+                }
+            ],
+            "class": "Budget"
+        },
         {
             "file": "models/transactionModel.js",
             "line": 18,
@@ -81,12 +139,60 @@
             "class": "Transaction"
         },
         {
+            "file": "routes/budgetRoutes.js",
+            "line": 30,
+            "description": "List all budgets.\nPath: api/budgets/",
+            "itemtype": "method",
+            "name": "GET",
+            "class": "budgetRouter"
+        },
+        {
+            "file": "routes/budgetRoutes.js",
+            "line": 52,
+            "description": "Path: api/budgets/",
+            "itemtype": "method",
+            "name": "POST",
+            "class": "budgetRouter"
+        },
+        {
+            "file": "routes/budgetRoutes.js",
+            "line": 70,
+            "description": "Get a single Budget.\nPath: api/budgets/:id",
+            "itemtype": "method",
+            "name": "GET",
+            "class": "budgetRouter"
+        },
+        {
+            "file": "routes/budgetRoutes.js",
+            "line": 97,
+            "description": "Path: api/budgets/:id",
+            "itemtype": "method",
+            "name": "PUT",
+            "class": "budgetRouter"
+        },
+        {
+            "file": "routes/budgetRoutes.js",
+            "line": 116,
+            "description": "Path: api/budgets/:id",
+            "itemtype": "method",
+            "name": "PATCH",
+            "class": "budgetRouter"
+        },
+        {
+            "file": "routes/budgetRoutes.js",
+            "line": 135,
+            "description": "Path: api/budgets/:id",
+            "itemtype": "method",
+            "name": "DELETE",
+            "class": "budgetRouter"
+        },
+        {
             "file": "routes/txnRoutes.js",
             "line": 30,
             "description": "List all transactions.\nPath: api/transactions/",
             "itemtype": "method",
             "name": "GET",
-            "class": "txnRouter"
+            "class": "budgetRouter"
         },
         {
             "file": "routes/txnRoutes.js",
@@ -94,39 +200,39 @@
             "description": "Path: api/transactions/",
             "itemtype": "method",
             "name": "POST",
-            "class": "txnRouter"
+            "class": "budgetRouter"
         },
         {
             "file": "routes/txnRoutes.js",
-            "line": 64,
+            "line": 70,
             "description": "Get a single Transaction.\nPath: api/transactions/:id",
             "itemtype": "method",
             "name": "GET",
-            "class": "txnRouter"
+            "class": "budgetRouter"
         },
         {
             "file": "routes/txnRoutes.js",
-            "line": 91,
+            "line": 97,
             "description": "Path: api/transactions/:id",
             "itemtype": "method",
             "name": "PUT",
-            "class": "txnRouter"
+            "class": "budgetRouter"
         },
         {
             "file": "routes/txnRoutes.js",
-            "line": 110,
+            "line": 116,
             "description": "Path: api/transactions/:id",
             "itemtype": "method",
             "name": "PATCH",
-            "class": "txnRouter"
+            "class": "budgetRouter"
         },
         {
             "file": "routes/txnRoutes.js",
-            "line": 129,
+            "line": 135,
             "description": "Path: api/transactions/:id",
             "itemtype": "method",
             "name": "DELETE",
-            "class": "txnRouter"
+            "class": "budgetRouter"
         }
     ],
     "warnings": []
