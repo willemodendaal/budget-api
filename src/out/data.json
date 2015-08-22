@@ -1,0 +1,66 @@
+{
+    "project": {},
+    "files": {
+        "models/transactionModel.js": {
+            "name": "models/transactionModel.js",
+            "modules": {
+                "transactionModel": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "transactionModel": {
+            "name": "transactionModel",
+            "submodules": {},
+            "elements": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "models/transactionModel.js",
+            "line": 1,
+            "description": "Provides database access to Transaction objects. Exports Transaction model.",
+            "type": "{Transaction}"
+        }
+    },
+    "classes": {},
+    "elements": {},
+    "classitems": [
+        {
+            "file": "models/transactionModel.js",
+            "line": 19,
+            "description": "Map all fields from a Transaction onto this Transaction, even\n null/empty fields.",
+            "itemtype": "method",
+            "name": "mapAllFieldsFrom",
+            "params": [
+                {
+                    "name": "txn",
+                    "description": "The transaction to map from onto this instance.",
+                    "type": "Transaction"
+                }
+            ],
+            "class": "",
+            "module": "transactionModel"
+        },
+        {
+            "file": "models/transactionModel.js",
+            "line": 34,
+            "description": "Map only the fields that were passed from a Transaction onto this transaction.\nThe _id property will be ignored if passed.",
+            "itemtype": "method",
+            "name": "mapPassedFieldsFrom",
+            "params": [
+                {
+                    "name": "txn",
+                    "description": "The transaction to map from onto this instance.",
+                    "type": "Transaction"
+                }
+            ],
+            "class": "",
+            "module": "transactionModel"
+        }
+    ],
+    "warnings": []
+}

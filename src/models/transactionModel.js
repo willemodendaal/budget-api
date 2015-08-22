@@ -35,6 +35,7 @@ transactionSchema.methods.mapAllFieldsFrom = function(txn) {
  * Map only the fields that were passed from a Transaction onto this transaction.
  * The _id property will be ignored if passed.
  *
+ * @method mapPassedFieldsFrom
  * @param txn {Transaction} The transaction to map from onto this instance.
  */
 transactionSchema.methods.mapPassedFieldsFrom = function(txn) {
