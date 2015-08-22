@@ -50,8 +50,9 @@ function _getTxn(req, res) {
 //  route. We append Txn to the request.
 function _injectTxnMiddleware(req, res, next) {
     Transaction.findById(req.params.id, function (err, txn) {
-        if (err)
+        if (err) {
             res.status(500).send(err);
+        }
         else if (txn) {
             req.txn = txn;
             next();
@@ -63,16 +64,13 @@ function _injectTxnMiddleware(req, res, next) {
 }
 
 function _putTxn(req, res) {
-    //Find and update entire Transaction.
-    req.txn.title = req.body.title;
-    req.txn.description = req.body.description;
-    req.txn.category = req.body.category;
-    req.txn.amount = req.body.amount;
-    req.txn.read = req.body.read;
+    //Update entire Transaction (all fields).
+    req.txn.mapAllFieldsFrom(req.body);
 
     req.txn.save(function(err) {
-        if (err)
+        if (err) {
             res.status(500).send(err);
+        }
         else {
             res.json(req.txn);
         }
@@ -80,18 +78,13 @@ function _putTxn(req, res) {
 }
 
 function _patchTxn(req, res) {
-    if (req.body._id) {
-        delete req.body._id; //We don't want to update this.
-    }
-
-    //Only update what is passed.
-    for(var p in req.body) {
-        req.txn[p] = req.body[p];
-    }
+    //Update only fields that were passed.
+    req.txn.mappPassedFieldsFrom(req.body);
 
     req.txn.save(function(err) {
-        if (err)
+        if (err) {
             res.status(500).send(err);
+        }
         else {
             res.json(req.txn);
         }
@@ -101,8 +94,9 @@ function _patchTxn(req, res) {
 function _deleteTxn(req,res) {
 
     req.txn.remove(function(err) {
-        if (err)
+        if (err) {
             res.status(500).send(err);
+        }
         else {
             //204 == No-content/Removed
             res.status(204).send('Txn deleted.');
