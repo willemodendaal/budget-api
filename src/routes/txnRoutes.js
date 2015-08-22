@@ -15,15 +15,15 @@ var express = require('express'),
 var txnRouter = function () {
     var router = express.Router();
 
-    router.use('budget/:budgetId/transactions/', _injectTxnMiddleware);
+    router.use('/budget/:budgetId/transactions/', _injectTxnMiddleware);
 
     router.route('/budget/:budgetId/transactions/')
         .post(_postTxn)
         .get(_findTxns);
 
-    router.use('budget/:budgetId/transactions/:id', _injectTxnMiddleware);
+    router.use('/budget/:budgetId/transactions/:id', _injectTxnMiddleware);
 
-    router.route('budget/:budgetId/transactions/:id')
+    router.route('/budget/:budgetId/transactions/:id')
         .get(_getTxn)
         .put(_putTxn)
         .patch(_patchTxn)
@@ -40,7 +40,7 @@ var txnRouter = function () {
  */
 function _findTxns(req, res) {
     var query = {
-        budget: req.query.budgetId
+        budget: req.params.budgetId
     };
 
     if (req.query.category) {
@@ -86,45 +86,6 @@ function _getTxn(req, res) {
     //Txn fetched by middleware, or 404 returned by middleware.
 
     res.json(req.txn);
-}
-
-//Middleware to get Txn by ID, since we do this in more than one
-//  route. We append Txn to the request.
-function _injectTxnMiddleware(req, res, next) {
-
-    //Find specified budget. Security to be added here to ensure users
-    //  only see their own budgets.
-    Budget.findById(req.params.budgetId, function(err, budget) {
-        if (err) {
-            res.status(500).send(err);
-        }
-        else if (budget && !req.params.id) {
-            //Budget found, but no txn id specified.
-            req.budget = budget;
-            next();
-        }
-        else if (budget) {
-            req.budget = budget;
-            //Budget found. Find transaction under budget.
-            Transaction.findById(req.params.id, _returnTxn);
-        }
-        else {
-            res.status(404).send('Budget not found.');
-        }
-    });
-
-    function _returnTxn(err, txn) {
-        if (err) {
-            res.status(500).send(err);
-        }
-        else if (txn) {
-            req.txn = txn;
-            next();
-        }
-        else {
-            res.status(404).send('Txn not found.');
-        }
-    }
 }
 
 /**
@@ -182,6 +143,45 @@ function _deleteTxn(req,res) {
             res.status(204).send('Txn deleted.');
         }
     });
+}
+
+//Middleware to get Txn by ID, since we do this in more than one
+//  route. We append Txn to the request.
+function _injectTxnMiddleware(req, res, next) {
+
+    //Find specified budget. Security to be added here to ensure users
+    //  only see their own budgets.
+    Budget.findById(req.params.budgetId, function(err, budget) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else if (budget && !req.params.id) {
+            //Budget found, but no txn id specified.
+            req.budget = budget;
+            next();
+        }
+        else if (budget) {
+            req.budget = budget;
+            //Budget found. Find transaction under budget.
+            Transaction.findById(req.params.id, _returnTxn);
+        }
+        else {
+            res.status(404).send('Budget not found.');
+        }
+    });
+
+    function _returnTxn(err, txn) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else if (txn) {
+            req.txn = txn;
+            next();
+        }
+        else {
+            res.status(404).send('Txn not found.');
+        }
+    }
 }
 
 module.exports = txnRouter;
