@@ -2,7 +2,8 @@ var express = require('express'),
     mongoose = require('mongoose'), //to access MongoDb
     bodyParser = require('body-parser'),
     Transaction = require('./src/models/transactionModel'),
-    TxnRouter = require('./src/routes/txnRoutes');
+    TxnRouter = require('./src/routes/txnRoutes'),
+    BudgetRouter = require('./src/routes/budgetRoutes');
 
 var db = mongoose.connect('mongodb://localhost/budget');
 var app = express();
@@ -12,6 +13,7 @@ app.use(bodyParser.json()); //Middleware that decodes json bodies.
 app.use(bodyParser.urlencoded({extended:true})); //Middleware that decodes form-encoded bodies.
 app.use('/doc', express.static('src/out'));
 app.use('/api/transactions', TxnRouter());
+app.use('/api/budgets', BudgetRouter());
 
 app.listen(port, function () {
     console.log('BudgetAPI listening on port ' + port);

@@ -8,10 +8,10 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var budgetSchema = new Schema({
-    title: { type: String },
+    title: { type: String, required: true },
     description: { type: String },
-    dateFrom: { type: Date },
-    dateTo: { type: Date }
+    dateFrom: { type: Date, required: true },
+    dateTo: { type: Date, required: true }
 });
 
 /**

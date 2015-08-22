@@ -2,7 +2,7 @@
  *
  * REST API to access Transactions.
  *
- * @class txnRouter
+ * @class budgetRouter
  * @static
  */
 
