@@ -12,7 +12,7 @@ var port = process.env.PORT || 3001;
 app.use(bodyParser.json()); //Middleware that decodes json bodies.
 app.use(bodyParser.urlencoded({extended:true})); //Middleware that decodes form-encoded bodies.
 app.use('/doc', express.static('src/out'));
-app.use('/api/transactions', TxnRouter());
+app.use('/api', TxnRouter());
 app.use('/api/budgets', BudgetRouter());
 
 app.listen(port, function () {

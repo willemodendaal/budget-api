@@ -1,24 +1,29 @@
 /**
  *
  * REST API to access Transactions.
+ * Transactions are always accessed via a parent /budget/:budgetId
  *
  * @class budgetRouter
  * @static
  */
 
 var express = require('express'),
+    Budget = require('../models/budgetModel'),
     Transaction = require('../models/transactionModel');
 
 
 var txnRouter = function () {
     var router = express.Router();
-    router.route('/')
+
+    router.use('budget/:budgetId/transactions/', _injectTxnMiddleware);
+
+    router.route('/budget/:budgetId/transactions/')
         .post(_postTxn)
         .get(_findTxns);
 
-    router.use('/:id', _injectTxnMiddleware);
+    router.use('budget/:budgetId/transactions/:id', _injectTxnMiddleware);
 
-    router.route('/:id')
+    router.route('budget/:budgetId/transactions/:id')
         .get(_getTxn)
         .put(_putTxn)
         .patch(_patchTxn)
@@ -29,12 +34,14 @@ var txnRouter = function () {
 
 /**
  * List all transactions.
- * Path: api/transactions/
+ * Path: api/budget/:budgetId/transactions/
  *
  * @method GET
  */
 function _findTxns(req, res) {
-    var query = {};
+    var query = {
+        budget: req.query.budgetId
+    };
 
     if (req.query.category) {
         query.category = req.query.category;
@@ -50,12 +57,13 @@ function _findTxns(req, res) {
 }
 
 /**
- * Path: api/transactions/
+ * Path: api/budget/:budgetId/transactions/
  *
  * @method POST
  */
 function _postTxn(req, res) {
     var txn = new Transaction(req.body);
+    txn.budget = req.budget.id;
 
     txn.save(function(err,txn) {
         if (err) {
@@ -69,18 +77,43 @@ function _postTxn(req, res) {
 
 /**
  * Get a single Transaction.
- * Path: api/transactions/:id
+ * Path: api/budget/:budgetId/transactions/:id
  *
  * @method GET
  */
 function _getTxn(req, res) {
+
+    //Txn fetched by middleware, or 404 returned by middleware.
+
     res.json(req.txn);
 }
 
 //Middleware to get Txn by ID, since we do this in more than one
 //  route. We append Txn to the request.
 function _injectTxnMiddleware(req, res, next) {
-    Transaction.findById(req.params.id, function (err, txn) {
+
+    //Find specified budget. Security to be added here to ensure users
+    //  only see their own budgets.
+    Budget.findById(req.params.budgetId, function(err, budget) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else if (budget && !req.params.id) {
+            //Budget found, but no txn id specified.
+            req.budget = budget;
+            next();
+        }
+        else if (budget) {
+            req.budget = budget;
+            //Budget found. Find transaction under budget.
+            Transaction.findById(req.params.id, _returnTxn);
+        }
+        else {
+            res.status(404).send('Budget not found.');
+        }
+    });
+
+    function _returnTxn(err, txn) {
         if (err) {
             res.status(500).send(err);
         }
@@ -89,13 +122,13 @@ function _injectTxnMiddleware(req, res, next) {
             next();
         }
         else {
-            res.status(404).send('No txn found.');
+            res.status(404).send('Txn not found.');
         }
-    });
+    }
 }
 
 /**
- * Path: api/transactions/:id
+ * Path: api/budget/:budgetId/transactions/:id
  *
  * @method PUT
  */
@@ -114,7 +147,7 @@ function _putTxn(req, res) {
 }
 
 /**
- * Path: api/transactions/:id
+ * Path: api/budget/:budgetId/transactions/:id
  *
  * @method PATCH
  */
@@ -133,7 +166,7 @@ function _patchTxn(req, res) {
 }
 
 /**
- * Path: api/transactions/:id
+ * Path: api/budget/:budgetId/transactions/:id
  *
  * @method DELETE
  */
