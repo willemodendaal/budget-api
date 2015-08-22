@@ -1,4 +1,10 @@
-
+/**
+ *
+ * REST API to access Transactions.
+ *
+ * @class txnRouter
+ * @static
+ */
 
 var express = require('express'),
     Transaction = require('../models/transactionModel');
@@ -21,6 +27,12 @@ var txnRouter = function () {
     return router;
 };
 
+/**
+ * List all transactions.
+ * Path: api/transactions/
+ *
+ * @method GET
+ */
 function _findTxns(req, res) {
     var query = {};
 
@@ -37,6 +49,11 @@ function _findTxns(req, res) {
     });
 }
 
+/**
+ * Path: api/transactions/
+ *
+ * @method POST
+ */
 function _postTxn(req, res) {
     var txn = new Transaction(req.body);
 
@@ -44,6 +61,12 @@ function _postTxn(req, res) {
     res.status(201).send(txn); //Status 201 = Created
 }
 
+/**
+ * Get a single Transaction.
+ * Path: api/transactions/:id
+ *
+ * @method GET
+ */
 function _getTxn(req, res) {
     res.json(req.txn);
 }
@@ -65,6 +88,11 @@ function _injectTxnMiddleware(req, res, next) {
     });
 }
 
+/**
+ * Path: api/transactions/:id
+ *
+ * @method PUT
+ */
 function _putTxn(req, res) {
     //Update entire Transaction (all fields).
     req.txn.mapAllFieldsFrom(req.body);
@@ -79,6 +107,11 @@ function _putTxn(req, res) {
     });
 }
 
+/**
+ * Path: api/transactions/:id
+ *
+ * @method PATCH
+ */
 function _patchTxn(req, res) {
     //Update only fields that were passed.
     req.txn.mappPassedFieldsFrom(req.body);
@@ -92,6 +125,12 @@ function _patchTxn(req, res) {
         }
     });
 }
+
+/**
+ * Path: api/transactions/:id
+ *
+ * @method DELETE
+ */
 
 function _deleteTxn(req,res) {
 

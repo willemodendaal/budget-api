@@ -1,8 +1,7 @@
 /**
  *  Provides database access to Transaction objects. Exports Transaction model.
  *
- * @module transactionModel
- * @type {Transaction}
+ * @class Transaction
  */
 
 var mongoose = require('mongoose'),

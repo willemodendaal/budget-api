@@ -3,35 +3,56 @@
     "files": {
         "models/transactionModel.js": {
             "name": "models/transactionModel.js",
-            "modules": {
-                "transactionModel": 1
+            "modules": {},
+            "classes": {
+                "Transaction": 1
             },
-            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "routes/txnRoutes.js": {
+            "name": "routes/txnRoutes.js",
+            "modules": {},
+            "classes": {
+                "txnRouter": 1
+            },
             "fors": {},
             "namespaces": {}
         }
     },
-    "modules": {
-        "transactionModel": {
-            "name": "transactionModel",
-            "submodules": {},
-            "elements": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {},
-            "tag": "module",
+    "modules": {},
+    "classes": {
+        "Transaction": {
+            "name": "Transaction",
+            "shortname": "Transaction",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
             "file": "models/transactionModel.js",
             "line": 1,
-            "description": "Provides database access to Transaction objects. Exports Transaction model.",
-            "type": "{Transaction}"
+            "description": "Provides database access to Transaction objects. Exports Transaction model."
+        },
+        "txnRouter": {
+            "name": "txnRouter",
+            "shortname": "txnRouter",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "routes/txnRoutes.js",
+            "line": 1,
+            "description": "REST API to access Transactions.",
+            "static": 1
         }
     },
-    "classes": {},
     "elements": {},
     "classitems": [
         {
             "file": "models/transactionModel.js",
-            "line": 19,
+            "line": 18,
             "description": "Map all fields from a Transaction onto this Transaction, even\n null/empty fields.",
             "itemtype": "method",
             "name": "mapAllFieldsFrom",
@@ -42,12 +63,11 @@
                     "type": "Transaction"
                 }
             ],
-            "class": "",
-            "module": "transactionModel"
+            "class": "Transaction"
         },
         {
             "file": "models/transactionModel.js",
-            "line": 34,
+            "line": 33,
             "description": "Map only the fields that were passed from a Transaction onto this transaction.\nThe _id property will be ignored if passed.",
             "itemtype": "method",
             "name": "mapPassedFieldsFrom",
@@ -58,8 +78,55 @@
                     "type": "Transaction"
                 }
             ],
-            "class": "",
-            "module": "transactionModel"
+            "class": "Transaction"
+        },
+        {
+            "file": "routes/txnRoutes.js",
+            "line": 30,
+            "description": "List all transactions.\nPath: api/transactions/",
+            "itemtype": "method",
+            "name": "GET",
+            "class": "txnRouter"
+        },
+        {
+            "file": "routes/txnRoutes.js",
+            "line": 52,
+            "description": "Path: api/transactions/",
+            "itemtype": "method",
+            "name": "POST",
+            "class": "txnRouter"
+        },
+        {
+            "file": "routes/txnRoutes.js",
+            "line": 64,
+            "description": "Get a single Transaction.\nPath: api/transactions/:id",
+            "itemtype": "method",
+            "name": "GET",
+            "class": "txnRouter"
+        },
+        {
+            "file": "routes/txnRoutes.js",
+            "line": 91,
+            "description": "Path: api/transactions/:id",
+            "itemtype": "method",
+            "name": "PUT",
+            "class": "txnRouter"
+        },
+        {
+            "file": "routes/txnRoutes.js",
+            "line": 110,
+            "description": "Path: api/transactions/:id",
+            "itemtype": "method",
+            "name": "PATCH",
+            "class": "txnRouter"
+        },
+        {
+            "file": "routes/txnRoutes.js",
+            "line": 129,
+            "description": "Path: api/transactions/:id",
+            "itemtype": "method",
+            "name": "DELETE",
+            "class": "txnRouter"
         }
     ],
     "warnings": []

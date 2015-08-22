@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>transactionModel</title>
+    <title>routes/txnRoutes.js</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -38,11 +38,12 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Transaction.html">Transaction</a></li>
+                                <li><a href="../classes/txnRouter.html">txnRouter</a></li>
                             </ul>
                 
                 
                             <ul id="api-modules" class="apis modules">
-                                <li><a href="../modules/transactionModel.html">transactionModel</a></li>
                             </ul>
                         </div>
                     </div>
@@ -76,30 +77,159 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>transactionModel Module</h1>
-<div class="box clearfix meta">
+<h1 class="file-heading">File: routes/txnRoutes.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ *
+ * REST API to access Transactions.
+ *
+ * @class txnRouter
+ * @static
+ */
+
+var express = require(&#x27;express&#x27;),
+    Transaction = require(&#x27;../models/transactionModel&#x27;);
 
 
-        <div class="foundat">
-            Defined in: <a href="../files/models_transactionModel.js.html#l1"><code>models&#x2F;transactionModel.js:1</code></a>
-        </div>
+var txnRouter = function () {
+    var router = express.Router();
+    router.route(&#x27;/&#x27;)
+        .post(_postTxn)
+        .get(_findTxns);
 
-</div>
+    router.use(&#x27;/:id&#x27;, _injectTxnMiddleware);
 
+    router.route(&#x27;/:id&#x27;)
+        .get(_getTxn)
+        .put(_putTxn)
+        .patch(_patchTxn)
+        .delete(_deleteTxn);
 
-<div class="box intro">
-    <p>Provides database access to Transaction objects. Exports Transaction model.</p>
+    return router;
+};
 
-</div>
+/**
+ * List all transactions.
+ * Path: api/transactions/
+ *
+ * @method GET
+ */
+function _findTxns(req, res) {
+    var query = {};
 
+    if (req.query.category) {
+        query.category = req.query.category;
+    }
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-    </div>
+    Transaction.find(query, function (err, txns) {
+        if (err) {
+            res.status(500).send(err);
+        }
 
+        res.json(txns);
+    });
+}
 
-    <div class="yui3-u-1-2">
-    </div>
+/**
+ * Path: api/transactions/
+ *
+ * @method POST
+ */
+function _postTxn(req, res) {
+    var txn = new Transaction(req.body);
+
+    txn.save();
+    res.status(201).send(txn); //Status 201 = Created
+}
+
+/**
+ * Get a single Transaction.
+ * Path: api/transactions/:id
+ *
+ * @method GET
+ */
+function _getTxn(req, res) {
+    res.json(req.txn);
+}
+
+//Middleware to get Txn by ID, since we do this in more than one
+//  route. We append Txn to the request.
+function _injectTxnMiddleware(req, res, next) {
+    Transaction.findById(req.params.id, function (err, txn) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else if (txn) {
+            req.txn = txn;
+            next();
+        }
+        else {
+            res.status(404).send(&#x27;No txn found.&#x27;);
+        }
+    });
+}
+
+/**
+ * Path: api/transactions/:id
+ *
+ * @method PUT
+ */
+function _putTxn(req, res) {
+    //Update entire Transaction (all fields).
+    req.txn.mapAllFieldsFrom(req.body);
+
+    req.txn.save(function(err) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.json(req.txn);
+        }
+    });
+}
+
+/**
+ * Path: api/transactions/:id
+ *
+ * @method PATCH
+ */
+function _patchTxn(req, res) {
+    //Update only fields that were passed.
+    req.txn.mappPassedFieldsFrom(req.body);
+
+    req.txn.save(function(err) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.json(req.txn);
+        }
+    });
+}
+
+/**
+ * Path: api/transactions/:id
+ *
+ * @method DELETE
+ */
+
+function _deleteTxn(req,res) {
+
+    req.txn.remove(function(err) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else {
+            //204 == No-content/Removed
+            res.status(204).send(&#x27;Txn deleted.&#x27;);
+        }
+    });
+}
+
+module.exports = txnRouter;
+    </pre>
 </div>
                     </div>
                 </div>

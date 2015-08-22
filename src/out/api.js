@@ -1,16 +1,11 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
-    "classes": [],
-    "modules": [
-        "transactionModel"
+    "classes": [
+        "Transaction",
+        "txnRouter"
     ],
-    "allModules": [
-        {
-            "displayName": "transactionModel",
-            "name": "transactionModel",
-            "description": "Provides database access to Transaction objects. Exports Transaction model."
-        }
-    ],
+    "modules": [],
+    "allModules": [],
     "elements": []
 } };
 });
