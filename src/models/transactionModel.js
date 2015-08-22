@@ -27,7 +27,7 @@ transactionSchema.methods.mapAllFieldsFrom = function (txn) {
     this.description = txn.description;
     this.category = txn.category;
     this.amount = txn.amount;
-    this.budget = txn.budget;
+    this.budget = txn.budget; 
 };
 
 /**
@@ -40,6 +40,10 @@ transactionSchema.methods.mapAllFieldsFrom = function (txn) {
 transactionSchema.methods.mapPassedFieldsFrom = function (txn) {
     if (txn._id) {
         delete txn._id; //We don't want to update the id.
+    }
+
+    if (txn.budget) {
+        delete txn.budget; //Don't allow changing of parent budget, for security reasons.
     }
 
     //Only update what is passed.
