@@ -27,7 +27,7 @@ transactionSchema.methods.mapAllFieldsFrom = function (txn) {
     this.description = txn.description;
     this.category = txn.category;
     this.amount = txn.amount;
-    this.budget = txn.budget; 
+    this.budget = txn.budget;
 };
 
 /**
