@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     Budget = require('../src/models/budgetModel');
 
+
 describe("Budget repository", function () {
     beforeAll(function (done) {
         this.db = mongoose.connect('mongodb://localhost/budget_test');
