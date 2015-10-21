@@ -17,7 +17,7 @@
     "sinon": "^1.17.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha ./spec --require ./spec/helpers/chai.js --reporter spec",
     "start": "node server.js"
   },
   "author": "",
