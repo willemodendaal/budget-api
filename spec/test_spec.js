@@ -1,26 +1,14 @@
-var mongoose = require('mongoose'),
-    Budget = require('../src/models/budgetModel');
-
-mongoose.disconnect();
-mongoose.connect('mongodb://localhost/budget_test');
+var
+    Budget = require('../src/models/budgetModel'),
+    Seeder = require('./helpers/testDbSeeder');
 
 describe("Budget repository", function () {
     before(function (done) {
-        console.log('Seeding db...');
-        _seedDb(done);
+        Seeder.seed(done);
     });
 
     after(function(done) {
-        //delete budgets
-        console.log('Cleaning db...');
-        Budget.find().remove(function(err) {
-            if (err) {
-                throw 'error clening db:' + err;
-            }
-
-            done();
-        });
-
+        Seeder.cleanup(done);
     });
 
     it("has one budget.", function (done) {
@@ -36,21 +24,4 @@ describe("Budget repository", function () {
         });
     });
 
-    var _seedDb = function (done) {
-        var budget = new Budget({
-            title: 'test b1',
-            dateFrom: '19 may 2005',
-            dateTo: '19 may 2005'
-        });
-
-        //Create a budget.
-        budget.save(function (err, budget) {
-            if (err) {
-                throw 'Error saving budget: ' + err;
-            }
-
-            console.log('Seeded db.');
-            done();
-        });
-    };
 });
