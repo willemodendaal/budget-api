@@ -6,7 +6,6 @@
  * @class budgetRouter
  * @static
  */
-
 var express = require('express'),
     Budget = require('../models/budgetModel'),
     Transaction = require('../models/transactionModel'),
