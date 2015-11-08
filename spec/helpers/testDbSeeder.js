@@ -28,7 +28,7 @@ module.exports.cleanup = function(done) {
     console.log('Cleaning db...');
     Budget.find().remove(function(err) {
         if (err) {
-            throw 'error cloning db:' + err;
+            throw 'error cleaning db:' + err;
         }
 
         done();
