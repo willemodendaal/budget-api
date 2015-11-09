@@ -2,7 +2,7 @@ var
     Budget = require('../src/models/budgetModel'),
     Seeder = require('./helpers/testDbSeeder');
 
-describe("Budget repository", function () {
+describe("Budget seeder", function () {
     before(function (done) {
         Seeder.seed(done);
     });
@@ -12,16 +12,21 @@ describe("Budget repository", function () {
     });
 
     it("has one budget.", function (done) {
-        Budget.find(function (err, budgets) {
-            if (err) {
-                throw 'error finding budget:' + err;
-            }
+        Seeder.addBudget('budget1').then(function() {
 
-            expect(budgets).to.exist;
-            expect(budgets).to.not.be.empty;
-            expect(budgets.length).to.equal(1);
-            done();
+            Budget.find(function (err, budgets) {
+                if (err) {
+                    throw 'error finding budget:' + err;
+                }
+
+                expect(budgets).to.exist;
+                expect(budgets).to.not.be.empty;
+                expect(budgets.length).to.equal(1);
+                done();
+            });
         });
+
+
     });
 
 });
