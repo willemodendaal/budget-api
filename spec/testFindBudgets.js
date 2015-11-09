@@ -2,7 +2,7 @@ var
     Budget = require('../src/models/budgetModel'),
     Seeder = require('./helpers/testDbSeeder');
 
-describe("Budget model", function () {
+describe("Budget api", function () {
     before(function (done) {
         Seeder.seed();
 
@@ -14,7 +14,7 @@ describe("Budget model", function () {
             .then(function resolve() {
                 done();
             }).catch(function rejected(reason) {
-                console.log('Error: ', reason);
+                throw 'Error: ' + reason;
             });
     });
 
@@ -23,14 +23,7 @@ describe("Budget model", function () {
     });
 
     it("returns all budgets.", function (done) {
-        Budget.find(function(err, results) {
-            if (err) {
-                throw 'error finding all budgets:' + err;
-            }
-
-            expect(results.length).to.equal(3);
-            done();
-        });
+        throw 'to implement';
     });
 
 
