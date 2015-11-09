@@ -4,17 +4,17 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
-    "body-parser": "^1.13.2",
-    "express": "^4.13.1",
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
     "gulp": "^3.9.0",
-    "gulp-nodemon": "^2.0.3",
-    "mongoose": "^4.0.8"
+    "gulp-nodemon": "^2.0.4",
+    "mongoose": "^4.2.4"
   },
   "devDependencies": {
-    "chai": "^3.3.0",
+    "chai": "^3.4.1",
     "frisby": "^0.8.5",
     "mocha": "^2.3.3",
-    "sinon": "^1.17.1"
+    "sinon": "^1.17.2"
   },
   "scripts": {
     "test": "mocha ./spec --require ./spec/helpers/chai.js --reporter spec",
