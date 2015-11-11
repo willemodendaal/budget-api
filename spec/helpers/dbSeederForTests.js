@@ -5,7 +5,9 @@ var Mongoose = require('mongoose'),
     Const = require('./testConstants');
 
 Mongoose.disconnect();
-Mongoose.connect(Const.testDbConnectionString);
+
+console.log('Connecting to database: ' + process.env.DB_NAME);
+Mongoose.connect(process.env.DB_NAME);
 
 let budgetsAdded = [];
 

@@ -5,7 +5,8 @@ var express = require('express'),
     TxnRouter = require('./routes/txnRoutes'),
     BudgetRouter = require('./routes/budgetRoutes');
 
-var db = mongoose.connect('mongodb://localhost/budget');
+var dbName = process.env.DB_NAME || 'mongodb://localhost/budget';
+var db = mongoose.connect();
 var app = express();
 var port = process.env.PORT || 3001;
 

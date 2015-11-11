@@ -1,6 +1,6 @@
 var
     Budget = require('../src/models/budgetModel'),
-    Seeder = require('./helpers/testDbSeeder');
+    Seeder = require('./helpers/dbSeederForTests');
 
 describe("Budget seeder", function () {
     before(function (done) {
