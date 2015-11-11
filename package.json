@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test": "mocha ./spec --require ./spec/helpers/chai.js --reporter spec",
-    "start": "node server.js"
+    "start": "node ./src/server.js"
   },
   "author": "",
   "license": "ISC"

@@ -23,6 +23,14 @@ describe("Budget api", function () {
     });
 
     it("returns all budgets.", function (done) {
+
+     /*
+     *
+     *   Launch a mini Express server to test against.
+     *   Override node environment variables for port, url, db name etc.
+     *
+     * */
+
         throw 'to implement';
     });
 

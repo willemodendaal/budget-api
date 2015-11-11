@@ -1,9 +1,9 @@
 var express = require('express'),
     mongoose = require('mongoose'), //to access MongoDb
     bodyParser = require('body-parser'),
-    Transaction = require('./src/models/transactionModel'),
-    TxnRouter = require('./src/routes/txnRoutes'),
-    BudgetRouter = require('./src/routes/budgetRoutes');
+    Transaction = require('./models/transactionModel'),
+    TxnRouter = require('./routes/txnRoutes'),
+    BudgetRouter = require('./routes/budgetRoutes');
 
 var db = mongoose.connect('mongodb://localhost/budget');
 var app = express();
@@ -26,3 +26,5 @@ process.on('SIGINT', function() {
         process.exit(0);
     });
 });
+
+
