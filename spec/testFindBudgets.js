@@ -4,13 +4,13 @@ var
     constants = require('./helpers/testConstants'),
     http = require('http');
 
-    console.log('Hosting test server...');
-    var server = require('../src/server');
-
 describe("Budget api", function () {
+    var server;
     before(function (done) {
-        Seeder.seed();
+        console.log('Hosting test server...');
+        server = require('../src/server');
 
+        Seeder.seed();
         var b1 = Seeder.addBudget('budget1');
         var b2 = Seeder.addBudget('budget2');
         var b3 = Seeder.addBudget('budget3');
@@ -24,6 +24,7 @@ describe("Budget api", function () {
     });
 
     after(function (done) {
+        server.close();
         Seeder.cleanup(done);
     });
 
@@ -31,7 +32,7 @@ describe("Budget api", function () {
         http.request(constants.urls.getBudgetsUrl(), function(resp) {
             done();
         });
-
+        done();
     });
 
 

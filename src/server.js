@@ -23,7 +23,7 @@ app.use('/doc', express.static('src/out'));
 app.use('/api', TxnRouter());
 app.use('/api/budgets', BudgetRouter());
 
-app.listen(port, function () {
+var server = app.listen(port, function () {
     console.log('BudgetAPI listening on port ' + port);
 });
 
@@ -35,8 +35,5 @@ process.on('SIGINT', function() {
     });
 });
 
-module.app = app;
-module.port = port;
-module.db = db;
-module.dbName = dbName;
+module.exports = server;
 
