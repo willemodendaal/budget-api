@@ -1,6 +1,11 @@
 var
     Budget = require('../src/models/budgetModel'),
-    Seeder = require('./helpers/dbSeederForTests');
+    Seeder = require('./helpers/dbSeederForTests'),
+    constants = require('./helpers/testConstants'),
+    http = require('http');
+
+    console.log('Hosting test server...');
+    var server = require('../src/server');
 
 describe("Budget api", function () {
     before(function (done) {
@@ -23,15 +28,10 @@ describe("Budget api", function () {
     });
 
     it("returns all budgets.", function (done) {
+        http.request(constants.urls.getBudgetsUrl(), function(resp) {
+            done();
+        });
 
-     /*
-     *
-     *   Launch a mini Express server to test against.
-     *   Override node environment variables for port, url, db name etc.
-     *
-     * */
-
-        throw 'to implement';
     });
 
 

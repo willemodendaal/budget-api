@@ -6,7 +6,14 @@ var express = require('express'),
     BudgetRouter = require('./routes/budgetRoutes');
 
 var dbName = process.env.DB_NAME || 'mongodb://localhost/budget';
-var db = mongoose.connect();
+
+var db;
+if (mongoose.connection.readyState == 0) {
+    db = mongoose.connect(dbName);
+} else {
+    db = mongoose.connection;
+}
+
 var app = express();
 var port = process.env.PORT || 3001;
 
@@ -28,4 +35,8 @@ process.on('SIGINT', function() {
     });
 });
 
+module.app = app;
+module.port = port;
+module.db = db;
+module.dbName = dbName;
 
