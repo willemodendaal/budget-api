@@ -6,6 +6,7 @@ var
 
 describe("Budget api", function () {
     var server;
+    this.timeout(10000);
     before(function (done) {
         console.log('Hosting test server...');
         server = require('../src/server');
@@ -29,10 +30,17 @@ describe("Budget api", function () {
     });
 
     it("returns all budgets.", function (done) {
-        http.request(constants.urls.getBudgetsUrl(), function(resp) {
-            done();
-        });
-        done();
+        setTimeout(function() {
+            var req = http.request(constants.urls.getBudgetsUrl(), function(resp) {
+                done();
+            });
+
+            req.on('error', function(err) {
+                throw 'error connecting to service:' + err;
+            });
+
+            req.end();
+        }, 5000);
     });
 
 
