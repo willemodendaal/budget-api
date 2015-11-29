@@ -11,7 +11,7 @@ var db;
 if (mongoose.connection.readyState == 0) {
     db = mongoose.connect(dbName);
 } else {
-    db = mongoose.connection;
+    db = mongoose; //connection already active.
 }
 
 var app = express();
