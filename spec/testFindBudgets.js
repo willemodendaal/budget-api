@@ -9,7 +9,7 @@ describe("Budget api", function () {
     this.timeout(10000);
     before(function (done) {
         console.log('Hosting test server...');
-        server = require('../src/server');
+        server = require('../src/server').server;
 
         Seeder.seed();
         var b1 = Seeder.addBudget('budget1');
@@ -20,8 +20,8 @@ describe("Budget api", function () {
             .then(function resolve() {
                 done();
             }).catch(function rejected(reason) {
-                throw 'Error: ' + reason;
-            });
+            throw 'Error: ' + reason;
+        });
     });
 
     after(function (done) {
@@ -30,19 +30,16 @@ describe("Budget api", function () {
     });
 
     it("returns all budgets.", function (done) {
-        setTimeout(function() {
-            var req = http.request(constants.urls.getBudgetsUrl(), function(resp) {
-                done();
-            });
+        var req = http.request(constants.urls.getBudgetsUrl(), function (resp) {
+            done();
+        });
 
-            req.on('error', function(err) {
-                throw 'error connecting to service:' + err;
-            });
+        req.on('error', function (err) {
+            throw 'error connecting to service:' + err;
+        });
 
-            req.end();
-        }, 5000);
+        req.end();
     });
-
 
 });
 

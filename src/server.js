@@ -1,7 +1,6 @@
 var express = require('express'),
     mongoose = require('mongoose'), //to access MongoDb
     bodyParser = require('body-parser'),
-    Transaction = require('./models/transactionModel'),
     TxnRouter = require('./routes/txnRoutes'),
     BudgetRouter = require('./routes/budgetRoutes');
 
@@ -25,6 +24,7 @@ app.use('/api/budgets', BudgetRouter());
 
 var server = app.listen(port, function () {
     console.log('BudgetAPI listening on port ' + port);
+    module.exports.listening = true;
 });
 
 //Clean-up properly. Close mongoose connection when app stops.
@@ -35,5 +35,5 @@ process.on('SIGINT', function() {
     });
 });
 
-module.exports = server;
+module.exports.server = server;
 
