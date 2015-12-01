@@ -29,9 +29,21 @@ describe("Budget api", function () {
         Seeder.cleanup(done);
     });
 
-    it("returns all budgets.", function (done) {
+    it("returns all budgets with correct titles.", function (done) {
         var req = http.request(constants.urls.getBudgetsUrl(), function (resp) {
-            done();
+            expect(resp.statusCode).to.equal(200);
+
+            resp.setEncoding('utf8');
+            resp.on('data', function (chunk) {
+                var json = JSON.parse(chunk);
+                expect(json.length).to.equal(3);
+                expect(json[0].title).to.equal('budget1');
+                expect(json[1].title).to.equal('budget2');
+                expect(json[2].title).to.equal('budget3');
+
+                done();
+            });
+
         });
 
         req.on('error', function (err) {
