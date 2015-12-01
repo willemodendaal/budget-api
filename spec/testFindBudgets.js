@@ -2,7 +2,7 @@ var
     Budget = require('../src/models/budgetModel'),
     Seeder = require('./helpers/dbSeederForTests'),
     constants = require('./helpers/testConstants'),
-    http = require('http');
+    request = require('request');
 
 describe("Budget api", function () {
     var server;
@@ -30,27 +30,18 @@ describe("Budget api", function () {
     });
 
     it("returns all budgets with correct titles.", function (done) {
-        var req = http.request(constants.urls.getBudgetsUrl(), function (resp) {
-            expect(resp.statusCode).to.equal(200);
+        request(constants.urls.getBudgetsUrl(), function (err, resp, body) {
+            expect(err).to.be.null;
 
-            resp.setEncoding('utf8');
-            resp.on('data', function (chunk) {
-                var json = JSON.parse(chunk);
-                expect(json.length).to.equal(3);
-                expect(json[0].title).to.equal('budget1');
-                expect(json[1].title).to.equal('budget2');
-                expect(json[2].title).to.equal('budget3');
+            var json = JSON.parse(body);
+            expect(json.length).to.equal(3);
+            expect(json[0].title).to.equal('budget1');
+            expect(json[1].title).to.equal('budget2');
+            expect(json[2].title).to.equal('budget3');
 
-                done();
-            });
+            done();
 
         });
-
-        req.on('error', function (err) {
-            throw 'error connecting to service:' + err;
-        });
-
-        req.end();
     });
 
 });
