@@ -104,7 +104,7 @@ function _putBudget(req, res) {
  */
 function _patchBudget(req, res) {
     //Update only fields that were passed.
-    req.budget.mappPassedFieldsFrom(req.body);
+    req.budget.mapPassedFieldsFrom(req.body);
 
     req.budget.save(function(err) {
         if (err) {

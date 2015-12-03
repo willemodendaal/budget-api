@@ -25,12 +25,11 @@ describe("Budget api", function () {
     });
 
     after(function (done) {
-        server.close();
         Seeder.cleanup(done);
     });
 
     it("returns all budgets with correct titles.", function (done) {
-        request(constants.urls.getBudgetsUrl(), function (err, resp, body) {
+        request(constants.urls.budgetsUrl(), function (err, resp, body) {
             expect(err).to.be.null;
 
             var json = JSON.parse(body);
@@ -43,6 +42,5 @@ describe("Budget api", function () {
 
         });
     });
-
 });
 
