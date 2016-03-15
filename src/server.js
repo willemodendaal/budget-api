@@ -4,11 +4,11 @@ var express = require('express'),
     TxnRouter = require('./routes/txnRoutes'),
     BudgetRouter = require('./routes/budgetRoutes');
 
-var dbName = process.env.DB_NAME || 'mongodb://localhost/budget';
+var dbConnectionStr = 'mongodb://localhost/'+process.env.DB_NAME || 'mongodb://localhost/budget';
 
 var db;
 if (mongoose.connection.readyState == 0) {
-    db = mongoose.connect(dbName);
+    db = mongoose.connect(dbConnectionStr);
 } else {
     db = mongoose; //connection already active.
 }

@@ -7,9 +7,9 @@ var Mongoose = require('mongoose'),
 Mongoose.disconnect();
 
 console.log('Connecting to database: ' + process.env.DB_NAME);
-Mongoose.connect(process.env.DB_NAME);
+Mongoose.connect('mongodb://localhost/'+ process.env.DB_NAME);
 
-let budgetsAdded = [];
+var budgetsAdded = [];
 
 module.exports.seed = function (done) {
     //Any initial setup, like test User creation.

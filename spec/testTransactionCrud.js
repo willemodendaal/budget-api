@@ -4,10 +4,10 @@ var Budget = require('../src/models/budgetModel'),
     request = require('request');
 
 describe("Transaction api", function() {
-    it("creates a transactions");
-    it("updates a transactions");
-    it("deletes a transactions");
-    it("gets a transactions");
+    it("creates a transaction");
+    it("updates a transaction");
+    it("deletes a transaction");
+    it("gets a transaction");
     it("gets all transactions");
     it("finds specific transactions");
 });
