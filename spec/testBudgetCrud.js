@@ -33,7 +33,19 @@ describe("Budget api crud methods", function () {
         );
     });
 
-    it('updates a budget');
+    it('updates(puts) a budget', function(done) {
+        _createBudget('toPut', new Date(), new Date(), function(budget) {
+	        var id = budget._id;
+	        budget.title = 'toPutUpdated';
+
+	        _putBudget(id, budget, function(updated) {
+		        expect(updated.title).to.equal('toPutUpdated');
+		        done();
+	        });
+        });
+    });
+
+    it('updates(patches) a budget');
     it('deletes a budget');
     it('gets a budget');
 
@@ -48,11 +60,32 @@ describe("Budget api crud methods", function () {
                 }
             },
             function (err, res, body) {
+	            if (err) {
+		            console.log('Error creating: ', err, res, body);
+	            }
                 expect(err).to.be.null;
                 expect(res.statusCode).to.equal(201); //201 == created
                 callback(body);
             }
         );
     }
+
+	function _putBudget(id, budget, callback) {
+		request.put({
+				url: Constants.urls.putBudgetUrl(id),
+				json: true,
+				body: budget
+			},
+			function (err, res, body) {
+				if (err) {
+					console.log('Error putting: ', err, res, body);
+				}
+
+				expect(err).to.be.null;
+				expect(res.statusCode).to.equal(200);
+				callback(body);
+			}
+		);
+	}
 });
 

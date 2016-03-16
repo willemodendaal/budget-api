@@ -1,5 +1,8 @@
+const rootUrl = 'http://localhost:3034/api';
+
 var urls = {
-    budgetsUrl: () => 'http://localhost:3034/api/budgets'
+    budgetsUrl: () => rootUrl + '/budgets',
+    putBudgetUrl: (id) => rootUrl + '/budgets/' + id
 };
 
 module.exports = {
