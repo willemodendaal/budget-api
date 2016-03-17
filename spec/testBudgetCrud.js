@@ -58,8 +58,26 @@ describe("Budget api crud methods", function () {
 		});
 	});
 
-    it('deletes a budget');
-    it('gets a budget');
+    it('deletes a budget', function(done) {
+	    _createBudget('toDelete', new Date(), new Date(), function(budget) {
+		    var originalId = budget._id;
+
+		    //GET the budget, ensure it exists.
+			_getBudget(originalId, function(fetched1) {
+				expect(fetched1._id).to.equal(originalId);
+
+				//Delete the budget.
+				_deleteBudget(originalId, function() {
+
+					//Try to GET again and expect a 404.
+					_getBudget(originalId, function(fetched2) {
+						expect(fetched2).to.be.null;
+						done();
+					});
+				});
+			});
+	    });
+    });
 
     function _createBudget(name, dateFrom, dateTo, callback) {
         request.post({
@@ -100,6 +118,43 @@ describe("Budget api crud methods", function () {
 		);
 	}
 
+	function _getBudget(id, callback) {
+		request.get({
+				url: Constants.urls.budgetUrl(id),
+				json: true
+			},
+			function (err, res, body) {
+				if (err) {
+					console.log('Error getting budget: ', err, res, body);
+				}
+
+				if (res.statusCode === 404) {
+					callback(null);
+				}
+				else {
+					expect(err).to.be.null;
+					expect(res.statusCode).to.equal(200);
+					callback(body);
+				}
+			}
+		);
+	}
+
+	function _deleteBudget(id, callback) {
+		request.del({
+				url: Constants.urls.budgetUrl(id)
+			},
+			function (err, res, body) {
+				if (err) {
+					console.log('Error deleting budget: ', err, res, body);
+				}
+
+				expect(err).to.be.null;
+				expect(res.statusCode).to.equal(204); //204 = Deleted
+				callback();
+			}
+		);
+	}
 
 	function _patchBudget(id, budget, callback) {
 		request.patch({
