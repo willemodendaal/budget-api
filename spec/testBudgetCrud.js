@@ -59,6 +59,33 @@ describe("Budget api crud methods", function () {
 	});
 
     it('deletes a budget', function(done) {
+
+	    new Promise(function(resolve, reject) {
+		        _createBudget('toDelete', new Date(), new Date(), (b) => resolve(b));
+	        })
+		    .then(function(budget) {
+			    //GET the budget, ensure it exists.
+			    return new Promise((resolve, reject) => _getBudget(budget._id, (b)=> resolve(b)) );
+		    })
+		    .then(function(budget) {
+			    //Delete the budget.
+			    return new Promise((resolve, reject) => _deleteBudget(budget._id, ()=> resolve(budget._id)) );
+		    })
+		    .then(function(budgetId) {
+			    //GET the budget (expected to be null).
+			    return new Promise((resolve, reject) => _getBudget(budgetId, (nullBudget)=> resolve(nullBudget)) );
+		    })
+		    .then(function(nullBudget) {
+			    expect(nullBudget).to.be.null;
+			    done();
+		    })
+		    .catch(function(err) {
+			    console.log(err);
+			    throw err;
+		    });
+
+
+/*
 	    _createBudget('toDelete', new Date(), new Date(), function(budget) {
 		    var originalId = budget._id;
 
@@ -72,11 +99,12 @@ describe("Budget api crud methods", function () {
 					//Try to GET again and expect a 404.
 					_getBudget(originalId, function(fetched2) {
 						expect(fetched2).to.be.null;
-						done();
+						//done();
 					});
 				});
 			});
 	    });
+*/
     });
 
     function _createBudget(name, dateFrom, dateTo, callback) {
