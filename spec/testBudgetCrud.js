@@ -22,8 +22,6 @@ describe("Budget api crud methods", function () {
         _createBudget('create budget test', dateFrom, dateTo)
 	        .then(function (newBudget) {
                 expect(newBudget.title).to.equal('create budget test');
-                //expect(newBudget.dateFrom).to.equal(new Date(dateFrom));
-                //expect(newBudget.dateTo).to.equal(new Date(dateTo));
                 expect(newBudget._id).to.be.ok;
                 done();
             }
@@ -36,10 +34,11 @@ describe("Budget api crud methods", function () {
 		        var id = budget._id;
 		        budget.title = 'toPutUpdated';
 
-		        _putBudget(id, budget, function(updated) {
-			        expect(updated.title).to.equal('toPutUpdated');
-			        done();
-		        });
+		        _putBudget(id, budget)
+			        .then(function(updated) {
+				        expect(updated.title).to.equal('toPutUpdated');
+				        done();
+		            });
             });
     });
 
@@ -49,16 +48,16 @@ describe("Budget api crud methods", function () {
 				var id = budget._id;
 				budget.description = 'patched';
 
-				_patchBudget(id, budget, function(updated) {
-					expect(updated.title).to.equal('toPatch');
-					expect(updated.description).to.equal('patched');
-					done();
-				});
+				_patchBudget(id, budget)
+					.then(function(updated) {
+						expect(updated.title).to.equal('toPatch');
+						expect(updated.description).to.equal('patched');
+						done();
+					});
 			});
 	});
 
     it('deletes a budget', function(done) {
-
 	    _createBudget('toDelete', new Date(), new Date())
 		    .then(function(budget) {
 			    //GET the budget, ensure it exists.
@@ -106,22 +105,24 @@ describe("Budget api crud methods", function () {
 		});
 	}
 
-	function _putBudget(id, budget, callback) {
-		request.put({
-				url: Constants.urls.budgetUrl(id),
-				json: true,
-				body: budget
-			},
-			function (err, res, body) {
-				if (err) {
-					console.log('Error putting: ', err, res, body);
-				}
+	function _putBudget(id, budget) {
+		return new Promise((resolve, reject) =>
+			request.put({
+					url: Constants.urls.budgetUrl(id),
+					json: true,
+					body: budget
+				},
+				function (err, res, body) {
+					if (err) {
+						console.log('Error putting: ', err, res, body);
+						reject(err);
+					}
 
-				expect(err).to.be.null;
-				expect(res.statusCode).to.equal(200);
-				callback(body);
-			}
-		);
+					expect(err).to.be.null;
+					expect(res.statusCode).to.equal(200);
+					resolve(body);
+				}
+			));
 	}
 
 	function _getBudget(id) {
@@ -166,22 +167,24 @@ describe("Budget api crud methods", function () {
 			));
 	}
 
-	function _patchBudget(id, budget, callback) {
-		request.patch({
-				url: Constants.urls.budgetUrl(id),
-				json: true,
-				body: budget
-			},
-			function (err, res, body) {
-				if (err) {
-					console.log('Error patching: ', err, res, body);
-				}
+	function _patchBudget(id, budget) {
+		return new Promise((resolve, reject) =>
+			request.patch({
+					url: Constants.urls.budgetUrl(id),
+					json: true,
+					body: budget
+				},
+				function (err, res, body) {
+					if (err) {
+						console.log('Error patching: ', err, res, body);
+						reject(err);
+					}
 
-				expect(err).to.be.null;
-				expect(res.statusCode).to.equal(200);
-				callback(body);
-			}
-		);
+					expect(err).to.be.null;
+					expect(res.statusCode).to.equal(200);
+					resolve(body);
+				}
+			));
 	}
 });
 
